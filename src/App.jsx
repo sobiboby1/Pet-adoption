@@ -5,8 +5,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
 
-
-
 import Navbar from './components/Navbar';
 import Adoption from './pages/Adoption';
 import CreatePost from './pages/CreatePost';
@@ -17,7 +15,6 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -30,7 +27,6 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  
   const fetchPosts = async () => {
     try {
       setLoading(true);
@@ -56,23 +52,18 @@ function App() {
   return (
     <Router>
       <div style={{ minHeight: '100vh', background: '#f7fafc', fontFamily: 'sans-serif' }}>
-       
+        
         <Navbar user={user} />
         
-      
         <Routes>
-         
           <Route path="/" element={<Navigate to="/adoption" replace />} />
-          
           
           <Route path="/auth" element={!user ? <Auth /> : <Navigate to="/adoption" replace />} />
           
-       
           <Route 
             path="/adoption" 
             element={<Adoption posts={posts} loading={loading} user={user} refreshPosts={fetchPosts} />} 
           />
-          
           
           <Route 
             path="/create" 
@@ -80,8 +71,10 @@ function App() {
           />
         </Routes>
 
-        
         <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} />
+        
+        {/* Vercel Analytics tracking component */}
+        <Analytics />
       </div>
     </Router>
   );
