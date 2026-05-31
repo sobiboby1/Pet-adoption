@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { supabase } from './supabaseClient';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Analytics } from "@vercel/analytics/react"
 
-// Component Imports
+
+
 import Navbar from './components/Navbar';
 import Adoption from './pages/Adoption';
 import CreatePost from './pages/CreatePost';
