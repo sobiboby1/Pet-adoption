@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 import { ToastContainer, toast } from 'react-toastify';
+import { Analytics } from '@vercel/analytics/react';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Component Imports
@@ -80,6 +81,7 @@ function App() {
 
         
         <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} />
+        <Analytics />
       </div>
     </Router>
   );
