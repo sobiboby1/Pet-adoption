@@ -9,6 +9,9 @@ import Navbar from './components/Navbar';
 import Adoption from './pages/Adoption';
 import CreatePost from './pages/CreatePost';
 import Auth from './pages/Auth';
+import TermsAndConditions from './pages/TermsAndConditions';
+import LegalDocs from './pages/LegalDocs';
+import About from './pages/About';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -55,21 +58,31 @@ function App() {
         
         <Navbar user={user} />
         
-        <Routes>
+       <Routes>
+          {/* Base Redirect */}
           <Route path="/" element={<Navigate to="/adoption" replace />} />
           
-          <Route path="/auth" element={!user ? <Auth /> : <Navigate to="/adoption" replace />} />
-          
+          {/* Main Adoption Feed */}
           <Route 
             path="/adoption" 
             element={<Adoption posts={posts} loading={loading} user={user} refreshPosts={fetchPosts} />} 
           />
           
+          {/* Auth Route */}
+          <Route path="/auth" element={!user ? <Auth /> : <Navigate to="/adoption" replace />} />
+          
+          {/* Create Post Route */}
           <Route 
             path="/create" 
             element={user ? <CreatePost user={user} refreshPosts={fetchPosts} /> : <Navigate to="/auth" replace />} 
           />
-        </Routes>
+
+         
+          <Route path="/about" element={<About />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
+           <Route path="/legal" element={<LegalDocs />} />   
+     </Routes>
+         
 
         <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} />
         

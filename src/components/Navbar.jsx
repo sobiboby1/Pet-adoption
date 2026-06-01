@@ -28,6 +28,8 @@ function Navbar({ user }) {
         <div style={styles.links}>
           <Link to="/adoption" style={styles.link}>Adoption Feed</Link>
           <Link to="/create" style={styles.link}>Rehome a Pet</Link>
+          <Link to="/about" style={styles.link}>About</Link>
+          
         </div>
 
         <div style={styles.authSection}>
