@@ -18,12 +18,12 @@ export default defineConfig({
         start_url: '/',
         icons: [
           {
-            src: '/icon.png',
+            src: 'icon.png', // Removed leading slash for strict PWA pathing
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/icon.png',
+            src: 'icon.png',
             sizes: '512x512',
             type: 'image/png'
           }
