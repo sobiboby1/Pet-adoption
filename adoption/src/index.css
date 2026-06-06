@@ -12,16 +12,43 @@
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', system-ui, sans-serif;
+  /* Prevent text from growing/shrinking on orientation change */
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background-color: var(--light);
   color: var(--dark);
   line-height: 1.6;
+  /* Crucial: stop horizontal scroll on mobile */
+  width: 100vw;
+  overflow-x: hidden;
 }
 
+/* --- RESPONSIVE CONTAINER --- */
 .container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+  width: 100%;        /* Default: take full width on mobile */
+  margin: 1rem auto;  /* Smaller margin for phones */
+  padding: 0 1rem;    /* Safe space on the left/right edges */
+}
+
+/* DESKTOP VIEW (Screens 768px and wider) */
+@media (min-width: 768px) {
+  .container {
+    max-width: 1200px;
+    margin: 2rem auto; /* Back to original margin for big screens */
+  }
+}
+
+/* --- MOBILE HELPER --- */
+/* Add this class to your pet grids or rows to make them stack on phones */
+.flex-responsive {
+  display: flex;
+  flex-direction: column; 
+}
+
+@media (min-width: 768px) {
+  .flex-responsive {
+    flex-direction: row;
+  }
 }
