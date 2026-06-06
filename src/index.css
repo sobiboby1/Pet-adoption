@@ -12,16 +12,148 @@
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background-color: var(--light);
   color: var(--dark);
   line-height: 1.6;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
+/* --- RESPONSIVE CONTAINER --- */
 .container {
-  max-width: 1200px;
-  margin: 2rem auto;
+  width: 100%;
+  margin: 1rem auto;
   padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 1200px;
+    margin: 2rem auto;
+  }
+}
+
+/* --- MOBILE LAYOUT HELPER --- */
+.flex-responsive {
+  display: flex;
+  flex-direction: column; 
+}
+
+@media (min-width: 768px) {
+  .flex-responsive {
+    flex-direction: row;
+  }
+}
+
+/* --- SINGLE, DEFINITIVE RESPONSIVE NAVBAR --- */
+.app-nav {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0.8rem 0;
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  
+  /* Mobile default: stack logo, links, and profile vertically */
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.nav-logo-text {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--dark);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+}
+
+.nav-auth-section {
+  display: flex;
+  align-items: center;
+}
+
+.nav-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+
+.nav-logout-btn {
+  background: none;
+  border: none;
+  color: #718096;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.nav-login-btn {
+  background: var(--primary);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+/* --- DESKTOP SCREEN ADJUSTMENTS --- */
+@media (min-width: 768px) {
+  .nav-container {
+    flex-direction: row; /* Spread elements out sideways on desktop */
+    justify-content: space-between;
+    gap: 0;
+  }
+  
+  .nav-links {
+    gap: 1.5rem;
+  }
 }
