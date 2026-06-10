@@ -26,43 +26,45 @@ function Adoption({ posts, loading, user, refreshPosts }) {
 
   return (
     <div className="container">
-      <div className="adopt-hero">
+      <div className="adopt-hero" style={{ padding: '40px 20px', textAlign: 'center' }}>
         <h1>Find Your New Best Friend</h1>
-        <p>Browse through loving pets looking for a second chance at a forever home.</p>
+        <p style={{ marginBottom: '20px' }}>Browse through loving pets looking for a second chance at a forever home.</p>
         
-        {/* --- LIVE DIRECT APK DOWNLOAD BADGE --- */}
-        <div style={{ marginTop: '12px' }}>
+        {/* --- HIGH VISIBILITY STYLED DOWNLOAD BUTTON --- */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
           <a 
             href="https://drive.google.com/uc?export=download&id=1MI6t9d_ZZH9Bla658ysB2O6dyv_wkHLn"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px',
-              background: 'rgba(255, 255, 255, 0.15)',
-              backdropFilter: 'blur(4px)',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              padding: '6px 14px',
-              borderRadius: '20px',
-              color: '#ffffff',
-              fontSize: '0.85rem',
-              fontWeight: '600',
+              gap: '8px',
+              backgroundColor: '#ff7a59', /* Solid vibrant coral brand color */
+              color: '#ffffff',          /* Bright white text for absolute contrast */
+              padding: '10px 22px',
+              borderRadius: '30px',
+              fontSize: '0.9rem',
+              fontWeight: '700',
               textDecoration: 'none',
-              transition: 'all 0.2s ease-in-out'
+              boxShadow: '0 4px 10px rgba(255, 122, 89, 0.3)',
+              transition: 'all 0.2s ease-in-out',
+              cursor: 'pointer'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.backgroundColor = '#e56847';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 15px rgba(255, 122, 89, 0.4)';
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+              e.currentTarget.style.backgroundColor = '#ff7a59';
               e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 10px rgba(255, 122, 89, 0.3)';
             }}
           >
-            <Download size={14} />
-            Android APK Available for Download
+            <Download size={16} strokeWidth={2.5} color="#ffffff" />
+            Download Android App (APK)
           </a>
         </div>
-        {/* -------------------------------------- */}
+        {/* ----------------------------------------------- */}
       </div>
 
       {loading ? (
@@ -118,7 +120,7 @@ function Adoption({ posts, loading, user, refreshPosts }) {
               <span className="adopt-modal-badge">{selectedPet.type}</span>
               <h2>Adopt {selectedPet.name}</h2>
               <p className="adopt-modal-meta"><strong>Age Stage:</strong> {selectedPet.age}</p>
-              <p className="adopt-meta"><strong>Listed By:</strong> {selectedPet.posted_by}</p>
+              <p className="adopt-modal-meta"><strong>Listed By:</strong> {selectedPet.posted_by}</p>
               
               <hr className="adopt-divider" />
               

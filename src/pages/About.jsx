@@ -3,42 +3,31 @@ import React from 'react';
 function About() {
   return (
     <div className="about-container">
-      {/* Introduction Section */}
-      <div className="about-section">
-        <h2 className="about-title">About PetAdopt</h2>
-        <p className="about-text">
-          Welcome to PetAdopt, a community-driven e-commerce platform dedicated to animal adoption in Pakistan. 
-          Our mission is to bridge the gap between animal lovers, shelters, and individual rescuers, making 
-          the rehoming process secure, transparent, and completely free. Whether you are looking to open 
-          your home to a new companion or trying to find a safe sanctuary for a rescue cat or dog, we provide 
-          the digital marketplace to make it happen safely.
-        </p>
-      </div>
-
-      {/* Our Inspiration Section */}
-      <div className="about-section">
-        <h3 className="about-subtitle">Our Rescues & Inspiration</h3>
+      {/* Our Inspiration Section - Main Entry */}
+      <div className="about-section" style={{ marginTop: '1rem' }}>
+        <h3 className="about-subtitle">Why I Built This Website</h3>
         <p className="about-text">
           This platform was born out of a deep-seated love for stray animals and the belief that every pet 
-          deserves a warm, loving home. Here are a few of the sweet companions that keep us inspired 
-          every single day to grow this platform across our local communities.
+          deserves a warm, loving home. This entire project was built in the beloved memory of my cat, 
+          <strong> Motu (aka Ash)</strong>, who continues to inspire me every single day to grow this 
+          platform and help vulnerable animals across our local communities.
         </p>
         
         {/* Cat Image Grid */}
         <div className="about-cat-grid">
           <img 
-            src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=cover&q=80&w=400" 
-            alt="Rescue Cat Sleeping" 
+            src="/1.jpeg" 
+            alt="In Memory of Motu" 
             className="about-cat-img" 
           />
           <img 
-            src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?auto=format&fit=cover&q=80&w=400" 
-            alt="Rescue Cat Looking Curiously" 
+            src="/3.jpeg" 
+            alt="Beloved Motu aka Ash" 
             className="about-cat-img" 
           />
           <img 
-            src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=cover&q=80&w=400" 
-            alt="Playful Rescue Cat" 
+            src="/5.jpeg" 
+            alt="PetAdopt Inspiration" 
             className="about-cat-img" 
           />
         </div>
