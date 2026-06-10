@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { supabase } from './supabaseClient';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 
 import Navbar from './components/Navbar';
 import Adoption from './pages/Adoption';
@@ -54,11 +54,10 @@ function App() {
 
   return (
     <Router>
-      <div style={{ minHeight: '100vh', background: '#f7fafc', fontFamily: 'sans-serif' }}>
-        
+      <div className="app-main-wrapper">
         <Navbar user={user} />
         
-       <Routes>
+        <Routes>
           {/* Base Redirect */}
           <Route path="/" element={<Navigate to="/adoption" replace />} />
           
@@ -77,16 +76,12 @@ function App() {
             element={user ? <CreatePost user={user} refreshPosts={fetchPosts} /> : <Navigate to="/auth" replace />} 
           />
 
-         
           <Route path="/about" element={<About />} />
           <Route path="/terms" element={<TermsAndConditions />} />
-           <Route path="/legal" element={<LegalDocs />} />   
-     </Routes>
-         
+          <Route path="/legal" element={<LegalDocs />} />   
+        </Routes>
 
         <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} />
-        
-        {/* Vercel Analytics tracking component */}
         <Analytics />
       </div>
     </Router>

@@ -94,14 +94,14 @@ function CreatePost({ user, refreshPosts }) {
   };
 
   return (
-    <div style={styles.wrapper}>
-      <div style={styles.formCard}>
-        <h2 style={styles.title}>Rehome a Pet</h2>
-        <p style={styles.subtitle}>Upload one or more photos to showcase your pet's personality.</p>
+    <div className="form-wrapper">
+      <div className="form-card">
+        <h2 className="form-title">Rehome a Pet</h2>
+        <p className="form-subtitle">Upload one or more photos to showcase your pet's personality.</p>
         
-        <form onSubmit={handleSubmit} style={styles.form}>
-          <div style={styles.group}>
-            <label style={styles.label}>Pet Photos (Upload up to 5)</label>
+        <form onSubmit={handleSubmit} className="form-element">
+          <div className="form-group">
+            <label className="form-label">Pet Photos (Upload up to 5)</label>
             <input 
               type="file" 
               accept="image/*" 
@@ -111,17 +111,17 @@ function CreatePost({ user, refreshPosts }) {
               style={{ display: 'none' }} 
             />
             
-            <div style={styles.uploadPlaceholder} onClick={() => fileInputRef.current.click()}>
+            <div className="upload-placeholder" onClick={() => fileInputRef.current.click()}>
               <Camera size={32} color="#ff7a59" />
               <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#718096' }}>Click to choose pictures</p>
             </div>
 
             {imagePreviews.length > 0 && (
-              <div style={styles.previewGrid}>
+              <div className="preview-grid">
                 {imagePreviews.map((url, index) => (
-                  <div key={index} style={styles.previewWrapper}>
-                    <img src={url} alt="Preview thumbnail" style={styles.thumbnail} />
-                    <button type="button" onClick={() => removeImage(index)} style={styles.smallRemoveBtn}>
+                  <div key={index} className="preview-wrapper">
+                    <img src={url} alt="Preview thumbnail" className="preview-thumbnail" />
+                    <button type="button" onClick={() => removeImage(index)} className="preview-remove-btn">
                       <X size={12} />
                     </button>
                   </div>
@@ -130,36 +130,36 @@ function CreatePost({ user, refreshPosts }) {
             )}
           </div>
 
-          <div style={styles.group}>
-            <label style={styles.label}>Pet's Name</label>
-            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required style={styles.input} placeholder="e.g., Felix" />
+          <div className="form-group">
+            <label className="form-label">Pet's Name</label>
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required className="form-input" placeholder="e.g., Felix" />
           </div>
 
-          <div style={styles.group}>
-            <label style={styles.label}>Type of Animal</label>
-            <select value={type} onChange={(e) => setType(e.target.value)} style={styles.input}>
+          <div className="form-group">
+            <label className="form-label">Type of Animal</label>
+            <select value={type} onChange={(e) => setType(e.target.value)} className="form-input">
               <option value="Cat">Cat</option>
               <option value="Dog">Dog</option>
               <option value="Other">Other</option>
             </select>
           </div>
 
-          <div style={styles.group}>
-            <label style={styles.label}>Age / Life Stage</label>
-            <input type="text" value={age} onChange={(e) => setAge(e.target.value)} required style={styles.input} placeholder="e.g., 2 years old" />
+          <div className="form-group">
+            <label className="form-label">Age / Life Stage</label>
+            <input type="text" value={age} onChange={(e) => setAge(e.target.value)} required className="form-input" placeholder="e.g., 2 years old" />
           </div>
 
-          <div style={styles.group}>
-            <label style={styles.label}>Your Phone Number</label>
-            <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required style={styles.input} placeholder="e.g., +92 300 1234567" />
+          <div className="form-group">
+            <label className="form-label">Your Phone Number</label>
+            <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} required className="form-input" placeholder="e.g., +92 300 1234567" />
           </div>
 
-          <div style={styles.group}>
-            <label style={styles.label}>Description</label>
-            <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows="4" required style={styles.textarea} placeholder="Personality quirks, friendliness, etc..." />
+          <div className="form-group">
+            <label className="form-label">Description</label>
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows="4" required className="form-textarea" placeholder="Personality quirks, friendliness, etc..." />
           </div>
 
-          <button type="submit" disabled={uploading} style={styles.submitBtn}>
+          <button type="submit" disabled={uploading} className="form-submit-btn">
             {uploading ? 'Publishing...' : 'Publish to Adoption Feed'}
           </button>
         </form>
@@ -167,23 +167,5 @@ function CreatePost({ user, refreshPosts }) {
     </div>
   );
 }
-
-const styles = {
-  wrapper: { display: 'flex', justifyContent: 'center', margin: '2rem auto', padding: '0 1rem' },
-  formCard: { background: '#fff', padding: '2.5rem', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', width: '100%', maxWidth: '550px' },
-  title: { margin: '0 0 0.5rem 0', color: '#2d3748' },
-  subtitle: { fontSize: '0.9rem', color: '#718096', marginBottom: '1.5rem' },
-  form: { display: 'flex', flexDirection: 'column', gap: '1.2rem' },
-  group: { display: 'flex', flexDirection: 'column', gap: '0.4rem' },
-  label: { fontWeight: '600', color: '#2d3748', fontSize: '0.95rem' },
-  input: { padding: '0.7rem', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '1rem' },
-  textarea: { padding: '0.7rem', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '1rem', resize: 'vertical' },
-  uploadPlaceholder: { border: '2px dashed #ff7a59', borderRadius: '8px', padding: '1.5rem', textAlign: 'center', cursor: 'pointer', background: '#fff9f7', display: 'flex', flexDirection: 'column', alignItems: 'center' },
-  previewGrid: { display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.75rem', background: '#f7fafc', padding: '0.5rem', borderRadius: '6px' },
-  previewWrapper: { position: 'relative', width: '80px', height: '80px', borderRadius: '6px', overflow: 'hidden', border: '1px solid #e2e8f0' },
-  thumbnail: { width: '100%', height: '100%', objectFit: 'cover' },
-  smallRemoveBtn: { position: 'absolute', top: '2px', right: '2px', background: 'rgba(0,0,0,0.7)', color: '#fff', border: 'none', borderRadius: '50%', padding: '2px', cursor: 'pointer', display: 'flex' },
-  submitBtn: { background: '#ff7a59', color: '#fff', border: 'none', padding: '0.8rem', borderRadius: '4px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1rem', marginTop: '0.5rem' }
-};
 
 export default CreatePost;

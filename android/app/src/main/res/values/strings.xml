@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PetAdoption</string>
+    <string name="title_activity_main">PetAdoption</string>
+    <string name="package_name">com.sobi.petadopt</string>
+    <string name="custom_url_scheme">com.sobi.petadopt</string>
+</resources>
