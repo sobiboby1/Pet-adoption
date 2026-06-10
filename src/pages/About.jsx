@@ -9,8 +9,7 @@ function About() {
         <p className="about-text">
           This platform was born out of a deep-seated love for stray animals and the belief that every pet 
           deserves a warm, loving home. This entire project was built in the beloved memory of my cat, 
-          <strong> Motu (aka Ash)</strong>, who continues to inspire me every single day to grow this 
-          platform and help vulnerable animals across our local communities.
+          <strong> Motu (aka Ash)</strong>, Miss HER SO MUCH:
         </p>
         
         {/* Cat Image Grid */}
