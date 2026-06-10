@@ -64,7 +64,7 @@ function About() {
               Download our standalone Android App (`.apk`) directly to your mobile device for quick browsing, rapid animal screening, and fluid listing management.
             </p>
             <a 
-              href="https://drive.google.com/download/101?id=1msqIns_dJB0RTJJ--leoxgQdS9ZBLNK4" 
+              href="https://drive.usercontent.google.com/download?id=1msqIns_dJB0RTJJ--leoxgQdS9ZBLNK4&export=download" 
               className="form-submit-btn"
               style={{ 
                 textDecoration: 'none', 

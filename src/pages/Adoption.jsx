@@ -33,7 +33,7 @@ function Adoption({ posts, loading, user, refreshPosts }) {
         {/* --- HIGH VISIBILITY STYLED DOWNLOAD BUTTON --- */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
           <a 
-            href="https://drive.google.com/download/101?id=1msqIns_dJB0RTJJ--leoxgQdS9ZBLNK4"
+            href="https://drive.usercontent.google.com/download?id=1msqIns_dJB0RTJJ--leoxgQdS9ZBLNK4&export=download"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
