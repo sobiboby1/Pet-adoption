@@ -7,7 +7,7 @@ function About() {
       <div className="about-section" style={{ marginTop: '1rem' }}>
         <h3 className="about-subtitle">Why I Built This Website</h3>
         <p className="about-text">
-          n Memory of Motu (Ash) 🐾
+          In Memory of Motu (Ash) 🐾
 Developed in the beloved memory of my stray cat, Motu (AKA Ash).
 
 She was a deeply loved, incredibly intelligent, and loving animal who spent 2 wonderful years with me. Miss her so much.
