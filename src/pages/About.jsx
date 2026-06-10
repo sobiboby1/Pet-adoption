@@ -7,10 +7,10 @@ function About() {
       <div className="about-section" style={{ marginTop: '1rem' }}>
         <h3 className="about-subtitle">Why I Built This Website</h3>
         <p className="about-text">
-          This platform was born out of a deep-seated love for stray animals and the belief that every pet 
-          deserves a warm, loving home. This entire project was built in the beloved memory of my cat, 
-          <strong> Motu (aka Ash)</strong>, who continues to inspire me every single day to grow this 
-          platform and help vulnerable animals across our local communities.
+          n Memory of Motu (Ash) 🐾
+Developed in the beloved memory of my stray cat, Motu (AKA Ash).
+
+She was a deeply loved, incredibly intelligent, and loving animal who spent 2 wonderful years with me. Miss her so much.
         </p>
         
         {/* Cat Image Grid */}
