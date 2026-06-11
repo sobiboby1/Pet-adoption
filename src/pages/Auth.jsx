@@ -24,12 +24,23 @@ function Auth() {
 
   const handleGoogleLogin = async () => {
     try {
+      // 1. Check if the user is running the app on a native mobile device
+      const isNativeMobile = window.Capacitor?.isNative;
+
+      // 2. Set the redirect: Use your production web URL for browsers, 
+      // or standard localhost tracking for mobile wrapper interception
+      const redirectUrl = isNativeMobile 
+        ? 'localhost://adoption' 
+        : `${window.location.origin}/adoption`;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin + '/adoption'
+          redirectTo: redirectUrl,
+          skipBrowserRedirect: false
         }
       });
+      
       if (error) throw error;
     } catch (err) {
       toast.error("Authentication failed: " + err.message);
