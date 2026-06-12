@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useNavigate, Link, useLocation } from 'react-router-dom';
+// Added HashRouter right here into the imports to fix the white screen crash
+import { Routes, Route, Navigate, useNavigate, HashRouter, Link, useLocation } from 'react-router-dom';
 import { App as CapApp } from '@capacitor/app';
 import { supabase } from './supabaseClient';
 import { Home, PlusCircle, Info, LogOut } from 'lucide-react';
@@ -13,15 +14,10 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // LIVE DATABASE STATE MANAGEMENT
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-
-  // LOCAL MODAL CONTROLLER
   const [isRehomeOpen, setIsRehomeOpen] = useState(false);
-
-  // RESPONSIVE SCREEN DETECTOR FOR INLINE DESIGN ALTERNATIONS
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
@@ -52,7 +48,7 @@ function App() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user || null);
-      fetchPosts(); // Always fetch posts so public users can browse
+      fetchPosts(); 
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -62,8 +58,6 @@ function App() {
 
     const setupDeepLinks = async () => {
       await CapApp.addListener('appUrlOpen', async (data) => {
-        console.log("Incoming Deep Link URL:", data.url);
-
         if (data.url.startsWith('petadopt://')) {
           const urlString = data.url.replace('petadopt://', 'https://localhost/');
           const url = new URL(urlString);
@@ -114,13 +108,12 @@ function App() {
     <div 
       className="app-main-container" 
       style={{ 
-        // Dynamic structural spacing depending on device sizing
         paddingTop: showNavbar ? '65px' : '0px', 
         paddingBottom: (showNavbar && !isDesktop) ? '70px' : '0px' 
       }}
     >
       
-      {/* --- RESPONSIVE COMPACT NAVIGATION HEADBAR --- */}
+      {/* --- RESPONSIVE NAVIGATION HEADBAR --- */}
       {showNavbar && (
         <header style={{
           position: 'fixed',
@@ -136,12 +129,10 @@ function App() {
           padding: '0 24px',
           zIndex: 1000
         }}>
-          {/* Logo Branding */}
           <Link to="/adoption" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
             <span style={{ fontWeight: '800', fontSize: '1.4rem', color: '#ff7a59' }}>PetAdopt</span>
           </Link>
           
-          {/* DESKTOP EXCLUSIVE TEXT TABS */}
           {isDesktop && (
             <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
               <Link to="/adoption" style={{ textDecoration: 'none', color: location.pathname === '/adoption' ? '#ff7a59' : '#4a5568', fontWeight: '600', fontSize: '0.95rem' }}>Adoption Feed</Link>
@@ -150,7 +141,6 @@ function App() {
             </div>
           )}
 
-          {/* Action Profile Corner / Logins Buttons */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -174,9 +164,7 @@ function App() {
         </header>
       )}
 
-      {/* --- APP ROUTING ROUTE INDEX LAYOUT --- */}
       <Routes>
-        {/* LANDING DIRECTLY ON ADOPTION FEED FIRST! */}
         <Route path="/" element={<Navigate to="/adoption" replace />} />
         <Route path="/auth" element={<Auth />} />
         <Route 
@@ -196,7 +184,7 @@ function App() {
         <Route path="*" element={<Navigate to="/adoption" replace />} />
       </Routes>
 
-      {/* --- MOBILE APP EXCLUSIVE BOTTOM NAVIGATION TABS (HIDDEN ON DESKTOP WEB) --- */}
+      {/* --- BOTTOM NAVIGATION TABS FOR MOBILE VANS --- */}
       {showNavbar && !isDesktop && (
         <nav style={{
           position: 'fixed',
