@@ -1,5 +1,10 @@
 {
-  "appId": "com.sobi.petadopt",
-  "appName": "PetAdoption",
-  "webDir": "dist"
+  "appId": "com.petadopt.app",
+  "appName": "PetAdopt",
+  "webDir": "dist",
+  "plugins": {
+    "DeepLinks": {
+      "schemes": ["petadopt"]
+    }
+  }
 }

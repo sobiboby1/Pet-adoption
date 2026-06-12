@@ -64,7 +64,7 @@ She was a deeply loved, incredibly intelligent, and loving animal who spent 2 wo
               Download our standalone Android App (`.apk`) directly to your mobile device for quick browsing, rapid animal screening, and fluid listing management.
             </p>
             <a 
-              href="https://drive.usercontent.google.com/download?id=1zO4rJLwWGFr5tysSJpBVZ-cfFiGTL051&export=download" 
+              href="https://drive.google.com/uc?export=download&id=1n8lAUqrJNkcDuausrvNfjGsimq8kElNR" 
               className="form-submit-btn"
               style={{ 
                 textDecoration: 'none', 

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { LogIn } from 'lucide-react';
 import { toast } from 'react-toastify';
+// FIXED: Import the official Capacitor core package to properly detect the native device environment
+import { Capacitor } from '@capacitor/core';
 
 function Auth() {
   const navigate = useNavigate();
@@ -24,20 +26,18 @@ function Auth() {
 
   const handleGoogleLogin = async () => {
     try {
-      // 1. Check if the user is running the app on a native mobile device
-      const isNativeMobile = window.Capacitor?.isNative;
+      // FIXED: Use the correct, foolproof method to see if running as an APK/App
+      const isNativeMobile = Capacitor.isNativePlatform();
 
-      // 2. Set the redirect: Use your production web URL for browsers, 
-      // or standard localhost tracking for mobile wrapper interception
+      // FIXED: Match the base custom scheme ('petadopt://') exactly with your App.jsx listener
       const redirectUrl = isNativeMobile 
-        ? 'localhost://adoption' 
+        ? 'petadopt://auth/callback' 
         : `${window.location.origin}/adoption`;
 
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: redirectUrl,
-          skipBrowserRedirect: false
         }
       });
       
