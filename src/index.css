@@ -28,12 +28,15 @@ body {
   width: 100%;
   margin: 1rem auto;
   padding: 0 1rem;
+  /* Added padding fallback for mobile view bottom nav safety */
+  padding-bottom: 85px; 
 }
 
 @media (min-width: 768px) {
   .container {
     max-width: 1200px;
     margin: 2rem auto;
+    padding-bottom: 30px; /* Reset padding for desktop view */
   }
 }
 
@@ -52,11 +55,16 @@ body {
 /* --- SINGLE, DEFINITIVE RESPONSIVE NAVBAR --- */
 .app-nav {
   background: #ffffff;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  padding: 0.8rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: none;
+  position: fixed; /* Lock it to the screen layout boundary */
+  bottom: 0;       /* Default setup: Placed at the bottom on Mobile App viewport */
+  top: auto;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0.6rem 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .nav-container {
@@ -66,10 +74,16 @@ body {
   padding: 0 1rem;
   display: flex;
   
-  /* Mobile default: stack logo, links, and profile vertically */
-  flex-direction: column;
+  /* Mobile default UI alignment layout */
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
-  gap: 12px;
+  gap: 0px;
+}
+
+/* Hide text icons on small mobile screens to keep the bottom nav bar clean */
+.nav-logo-text {
+  display: none; 
 }
 
 .nav-logo {
@@ -79,16 +93,10 @@ body {
   text-decoration: none;
 }
 
-.nav-logo-text {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: var(--dark);
-}
-
 .nav-links {
   display: flex;
-  gap: 1.2rem;
-  flex-wrap: wrap;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
   justify-content: center;
 }
 
@@ -117,8 +125,8 @@ body {
 }
 
 .nav-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--border);
@@ -139,22 +147,44 @@ body {
   background: var(--primary);
   color: #fff;
   text-decoration: none;
-  padding: 0.5rem 1.2rem;
+  padding: 0.4rem 1rem;
   border-radius: 6px;
   font-weight: bold;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
-/* --- DESKTOP SCREEN ADJUSTMENTS --- */
+/* --- AUTOMATICALLY SWAPS NAVBAR TO THE TOP FOR WEBPAGES --- */
 @media (min-width: 768px) {
+  .app-nav {
+    position: sticky;
+    top: 0;            /* Snaps cleanly to the top on desktop web browsers */
+    bottom: auto;      /* Removes mobile bottom anchor */
+    border-bottom: 1px solid var(--border);
+    border-top: none;
+    padding: 0.8rem 0;
+    box-shadow: none;
+  }
+
   .nav-container {
-    flex-direction: row; /* Spread elements out sideways on desktop */
+    flex-direction: row; 
     justify-content: space-between;
     gap: 0;
   }
   
+  .nav-logo-text {
+    display: block; /* Bring back app branding titles on desktop */
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--dark);
+  }
+
   .nav-links {
     gap: 1.5rem;
+  }
+
+  .nav-login-btn {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -653,8 +683,6 @@ body {
 .legal-date { font-size: 0.9rem; color: #718096; margin-bottom: 20px; }
 .legal-heading { font-size: 1.2rem; marginTop: 20px; margin-bottom: 10px; color: var(--dark); }
 .legal-paragraph { margin-bottom: 15px; color: #4a5568; }
-
-
 
 /* ==========================================
    GLOBAL APP WRAPPER HOOK
