@@ -45,6 +45,8 @@ function App() {
       setUser(session?.user || null);
       if (session) {
         fetchPosts();
+      } else {
+        setLoading(false); // Stop loading if not logged in
       }
     });
 
@@ -59,8 +61,6 @@ function App() {
 
     const setupDeepLinks = async () => {
       await CapApp.addListener('appUrlOpen', async (data) => {
-        console.log("Incoming Deep Link URL:", data.url);
-
         if (data.url.startsWith('petadopt://')) {
           const urlString = data.url.replace('petadopt://', 'https://localhost/');
           const url = new URL(urlString);
@@ -97,11 +97,15 @@ function App() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/auth');
+    navigate('/adoption'); // Redirect to public feed after logout
   };
 
-  // Helper helper function to verify route before launching form modal
   const triggerRehomeModal = () => {
+    if (!user) {
+      alert("Please sign in to rehome a pet.");
+      navigate('/auth');
+      return;
+    }
     if (location.pathname !== '/adoption') {
       navigate('/adoption');
     }
@@ -111,40 +115,18 @@ function App() {
   return (
     <div className="app-main-container" style={{ paddingTop: showNavbar ? '60px' : '0px', paddingBottom: showNavbar ? '70px' : '0px' }}>
       
-      {/* --- MOBILE TOP ACTION HEADER --- */}
       {showNavbar && (
         <header style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '60px',
-          backgroundColor: '#ffffff',
-          borderBottom: '1px solid #e2e8f0',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '0 20px',
-          zIndex: 1000
+          position: 'fixed', top: 0, left: 0, right: 0, height: '60px', backgroundColor: '#ffffff',
+          borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between',
+          alignItems: 'center', padding: '0 20px', zIndex: 1000
         }}>
           <span style={{ fontWeight: '800', fontSize: '1.2rem', color: '#ff7a59' }}>PetAdopt</span>
-          
-          <button 
-            onClick={triggerRehomeModal} 
-            style={{
-              backgroundColor: '#ff7a59',
-              color: '#ffffff',
-              border: 'none',
-              padding: '6px 14px',
-              borderRadius: '20px',
-              fontSize: '0.85rem',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
+          <button onClick={triggerRehomeModal} style={{
+            backgroundColor: '#ff7a59', color: '#ffffff', border: 'none', padding: '6px 14px',
+            borderRadius: '20px', fontSize: '0.85rem', fontWeight: '700', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', gap: '6px'
+          }}>
             <PlusCircle size={16} />
             Rehome a Pet
           </button>
@@ -152,7 +134,8 @@ function App() {
       )}
 
       <Routes>
-        <Route path="/" element={<Navigate to="/auth" replace />} />
+        {/* Changed root redirect to /adoption */}
+        <Route path="/" element={<Navigate to="/adoption" replace />} />
         <Route path="/auth" element={<Auth />} />
         <Route 
           path="/adoption" 
@@ -168,47 +151,39 @@ function App() {
           } 
         />
         <Route path="/about" element={<About />} />
-        <Route path="*" element={<Navigate to="/auth" replace />} />
+        {/* Changed catch-all to /adoption */}
+        <Route path="*" element={<Navigate to="/adoption" replace />} />
       </Routes>
 
-      {/* --- MOBILE BOTTOM NAVIGATION TABS --- */}
       {showNavbar && (
         <nav style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '60px',
-          backgroundColor: '#ffffff',
-          borderTop: '1px solid #e2e8f0',
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-          zIndex: 1000,
-          padding: '5px 0'
+          position: 'fixed', bottom: 0, left: 0, right: 0, height: '60px', backgroundColor: '#ffffff',
+          borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-around',
+          alignItems: 'center', zIndex: 1000, padding: '5px 0'
         }}>
           <Link to="/adoption" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textDecoration: 'none', color: location.pathname === '/adoption' ? '#ff7a59' : '#718096', fontSize: '0.8rem' }}>
             <Home size={22} />
             <span>Home</span>
           </Link>
-          
-          <div 
-            onClick={triggerRehomeModal}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#718096', fontSize: '0.8rem', cursor: 'pointer' }}
-          >
+          <div onClick={triggerRehomeModal} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#718096', fontSize: '0.8rem', cursor: 'pointer' }}>
             <PlusCircle size={22} />
             <span>Rehome</span>
           </div>
-          
           <Link to="/about" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textDecoration: 'none', color: location.pathname === '/about' ? '#ff7a59' : '#718096', fontSize: '0.8rem' }}>
             <Info size={22} />
             <span>About</span>
           </Link>
-
-          <button onClick={handleLogout} style={{ background: 'none', border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#e53e3e', fontSize: '0.8rem', cursor: 'pointer' }}>
-            <LogOut size={22} />
-            <span>Logout</span>
-          </button>
+          {user ? (
+            <button onClick={handleLogout} style={{ background: 'none', border: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', color: '#e53e3e', fontSize: '0.8rem', cursor: 'pointer' }}>
+              <LogOut size={22} />
+              <span>Logout</span>
+            </button>
+          ) : (
+            <Link to="/auth" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textDecoration: 'none', color: '#ff7a59', fontSize: '0.8rem' }}>
+              <LogOut size={22} />
+              <span>Login</span>
+            </Link>
+          )}
         </nav>
       )}
     </div>
