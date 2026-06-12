@@ -17,7 +17,7 @@ function Adoption({ posts = [], loading, user, refreshPosts, isRehomeOpen, setIs
   const [formData, setFormData] = useState({
     name: '',
     type: 'Cat',
-    age: '', // Added age property to match schema requirements
+    age: '', 
     phone: '',
     description: ''
   });
@@ -100,9 +100,6 @@ function Adoption({ posts = [], loading, user, refreshPosts, isRehomeOpen, setIs
       setSubmitting(true);
       const uploadedUrls = [];
       
-      console.log("Starting form submission. Total files selected:", selectedFiles.length);
-
-      // 1. UPLOAD IMAGES TO STORAGE
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         const compressedBlob = await compressImage(file);
@@ -133,15 +130,13 @@ function Adoption({ posts = [], loading, user, refreshPosts, isRehomeOpen, setIs
         ? uploadedUrls 
         : ['https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=500'];
 
-      // 2. INSERT METADATA RECORD WITH AGE INCLUDED
-      console.log("Inserting metadata payload properties into listings database table...");
       const { data: dbData, error: dbError } = await supabase
         .from('listings')
         .insert([
           {
             name: formData.name,
             type: formData.type,
-            age: formData.age, // Added to resolve the not-null constraint error
+            age: formData.age, 
             phone: formData.phone,
             description: formData.description,
             images: finalImagesArray,
@@ -186,6 +181,7 @@ function Adoption({ posts = [], loading, user, refreshPosts, isRehomeOpen, setIs
         <p style={{ marginBottom: '20px' }}>Browse through loving pets looking for a second chance at a forever home.</p>
         
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+          {/* UPDATED DIRECT LINK DOWN BELOW */}
           <a 
             href="https://drive.google.com/uc?export=download&id=1n8lAUqrJNkcDuausrvNfjGsimq8kElNR"
             style={{
@@ -325,7 +321,6 @@ function Adoption({ posts = [], loading, user, refreshPosts, isRehomeOpen, setIs
                   </div>
                 </div>
 
-                {/* ADDED: Age Input Field to resolve database schema rejection */}
                 <div>
                   <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', marginBottom: '4px', color: '#4a5568' }}>Age</label>
                   <input type="text" name="age" value={formData.age} onChange={handleInputChange} required style={{ width: '100%', padding: '8px 12px', border: '1px solid #cbd5e0', borderRadius: '6px', fontSize: '0.9rem' }} placeholder="e.g. 2 Months, 1 Year" />
