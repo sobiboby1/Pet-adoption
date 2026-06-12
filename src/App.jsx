@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// Added HashRouter right here into the imports to fix the white screen crash
 import { Routes, Route, Navigate, useNavigate, HashRouter, Link, useLocation } from 'react-router-dom';
 import { App as CapApp } from '@capacitor/app';
 import { supabase } from './supabaseClient';
@@ -14,10 +13,15 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   
+  // LIVE DATABASE STATE MANAGEMENT
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+
+  // LOCAL MODAL CONTROLLER
   const [isRehomeOpen, setIsRehomeOpen] = useState(false);
+
+  // RESPONSIVE SCREEN DETECTOR
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
@@ -26,6 +30,7 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Clean check for the active routing path
   const showNavbar = location.pathname !== '/auth';
 
   const fetchPosts = async () => {
@@ -54,10 +59,17 @@ function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null);
       fetchPosts();
+      
+      // Auto-kick to clean auth path if session ends or signs out
+      if (event === 'SIGNED_OUT') {
+        navigate('/auth');
+      }
     });
 
     const setupDeepLinks = async () => {
       await CapApp.addListener('appUrlOpen', async (data) => {
+        console.log("Incoming Deep Link URL:", data.url);
+
         if (data.url.startsWith('petadopt://')) {
           const urlString = data.url.replace('petadopt://', 'https://localhost/');
           const url = new URL(urlString);
@@ -92,12 +104,20 @@ function App() {
     };
   }, [navigate]);
 
+  // Clean signout that routes to the exact hash definition path
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/auth');
   };
 
+  // STRICT AUTH BLOCKER FOR REHOME MODAL
   const triggerRehomeModal = () => {
+    if (!user) {
+      alert("Please sign in to list a pet for rehoming!");
+      navigate('/auth');
+      return;
+    }
+
     if (location.pathname !== '/adoption') {
       navigate('/adoption');
     }
@@ -113,7 +133,7 @@ function App() {
       }}
     >
       
-      {/* --- RESPONSIVE NAVIGATION HEADBAR --- */}
+      {/* --- RESPONSIVE TOP HEADER --- */}
       {showNavbar && (
         <header style={{
           position: 'fixed',
@@ -129,10 +149,12 @@ function App() {
           padding: '0 24px',
           zIndex: 1000
         }}>
+          {/* Logo Brand Title */}
           <Link to="/adoption" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
             <span style={{ fontWeight: '800', fontSize: '1.4rem', color: '#ff7a59' }}>PetAdopt</span>
           </Link>
           
+          {/* DESKTOP EXCLUSIVE LINK TABS */}
           {isDesktop && (
             <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
               <Link to="/adoption" style={{ textDecoration: 'none', color: location.pathname === '/adoption' ? '#ff7a59' : '#4a5568', fontWeight: '600', fontSize: '0.95rem' }}>Adoption Feed</Link>
@@ -141,6 +163,7 @@ function App() {
             </div>
           )}
 
+          {/* User Account Corner */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             {user ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -164,6 +187,7 @@ function App() {
         </header>
       )}
 
+      {/* --- APP PAGES INDEX ROUTER --- */}
       <Routes>
         <Route path="/" element={<Navigate to="/adoption" replace />} />
         <Route path="/auth" element={<Auth />} />
@@ -184,7 +208,7 @@ function App() {
         <Route path="*" element={<Navigate to="/adoption" replace />} />
       </Routes>
 
-      {/* --- BOTTOM NAVIGATION TABS FOR MOBILE VANS --- */}
+      {/* --- MOBILE EXCLUSIVE BOTTOM NAV --- */}
       {showNavbar && !isDesktop && (
         <nav style={{
           position: 'fixed',
