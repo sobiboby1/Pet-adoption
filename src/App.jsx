@@ -3,7 +3,11 @@ import { Routes, Route, Navigate, useNavigate, HashRouter, Link, useLocation } f
 import { App as CapApp } from '@capacitor/app';
 import { supabase } from './supabaseClient';
 import { Home, PlusCircle, Info, LogOut } from 'lucide-react';
-import { toast } from 'react-toastify';
+
+// Import your page components
+import Auth from './pages/Auth';
+import Adoption from './pages/Adoption';
+import About from './pages/About'; 
 
 function App() {
   const navigate = useNavigate();
@@ -16,15 +20,6 @@ function App() {
 
   // LOCAL MODAL CONTROLLER
   const [isRehomeOpen, setIsRehomeOpen] = useState(false);
-
-  // RESPONSIVE SCREEN DETECTOR
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-
-  useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const showNavbar = location.pathname !== '/auth';
 
@@ -48,12 +43,18 @@ function App() {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user || null);
-      fetchPosts(); // Public users can view listings without being forced to log in
+      if (session) {
+        fetchPosts();
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null);
-      fetchPosts();
+      if (session) {
+        fetchPosts();
+      } else {
+        setPosts([]);
+      }
     });
 
     const setupDeepLinks = async () => {
@@ -99,14 +100,8 @@ function App() {
     navigate('/auth');
   };
 
-  // STRICT AUTH PROTECTION ON REHOME BUTTONS
+  // Helper helper function to verify route before launching form modal
   const triggerRehomeModal = () => {
-    if (!user) {
-      toast.error("Please sign in to list a pet for rehoming!");
-      navigate('/auth');
-      return;
-    }
-
     if (location.pathname !== '/adoption') {
       navigate('/adoption');
     }
@@ -114,71 +109,50 @@ function App() {
   };
 
   return (
-    <div 
-      className="app-main-container" 
-      style={{ 
-        paddingTop: showNavbar ? '65px' : '0px', 
-        paddingBottom: (showNavbar && !isDesktop) ? '70px' : '0px' 
-      }}
-    >
+    <div className="app-main-container" style={{ paddingTop: showNavbar ? '60px' : '0px', paddingBottom: showNavbar ? '70px' : '0px' }}>
       
-      {/* --- RESPONSIVE TOP HEADER --- */}
+      {/* --- MOBILE TOP ACTION HEADER --- */}
       {showNavbar && (
         <header style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
-          height: '65px',
+          height: '60px',
           backgroundColor: '#ffffff',
           borderBottom: '1px solid #e2e8f0',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '0 24px',
+          padding: '0 20px',
           zIndex: 1000
         }}>
-          {/* Logo Brand Title */}
-          <Link to="/adoption" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-            <span style={{ fontWeight: '800', fontSize: '1.4rem', color: '#ff7a59' }}>PetAdopt</span>
-          </Link>
+          <span style={{ fontWeight: '800', fontSize: '1.2rem', color: '#ff7a59' }}>PetAdopt</span>
           
-          {/* DESKTOP EXCLUSIVE LINK TABS */}
-          {isDesktop && (
-            <div style={{ display: 'flex', gap: '28px', alignItems: 'center' }}>
-              <Link to="/adoption" style={{ textDecoration: 'none', color: location.pathname === '/adoption' ? '#ff7a59' : '#4a5568', fontWeight: '600', fontSize: '0.95rem' }}>Adoption Feed</Link>
-              <span onClick={triggerRehomeModal} style={{ cursor: 'pointer', color: '#4a5568', fontWeight: '600', fontSize: '0.95rem' }}>Rehome a Pet</span>
-              <Link to="/about" style={{ textDecoration: 'none', color: location.pathname === '/about' ? '#ff7a59' : '#4a5568', fontWeight: '600', fontSize: '0.95rem' }}>About Us</Link>
-            </div>
-          )}
-
-          {/* User Account Corner */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            {user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <img 
-                  src={user.user_metadata?.avatar_url || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'} 
-                  alt="Profile" 
-                  style={{ width: '34px', height: '34px', borderRadius: '50%', border: '2px solid #e2e8f0', objectFit: 'cover' }} 
-                />
-                {isDesktop && (
-                  <button onClick={handleLogout} style={{ background: 'none', border: 'none', color: '#e53e3e', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '600', fontSize: '0.9rem' }}>
-                    <LogOut size={16} /> Logout
-                  </button>
-                )}
-              </div>
-            ) : (
-              <Link to="/auth" style={{ backgroundColor: '#ff7a59', color: '#ffffff', textDecoration: 'none', padding: '8px 18px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: '700' }}>
-                Sign In
-              </Link>
-            )}
-          </div>
+          <button 
+            onClick={triggerRehomeModal} 
+            style={{
+              backgroundColor: '#ff7a59',
+              color: '#ffffff',
+              border: 'none',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              fontSize: '0.85rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <PlusCircle size={16} />
+            Rehome a Pet
+          </button>
         </header>
       )}
 
-      {/* --- APP PAGES INDEX ROUTER --- */}
       <Routes>
-        <Route path="/" element={<Navigate to="/adoption" replace />} />
+        <Route path="/" element={<Navigate to="/auth" replace />} />
         <Route path="/auth" element={<Auth />} />
         <Route 
           path="/adoption" 
@@ -194,11 +168,11 @@ function App() {
           } 
         />
         <Route path="/about" element={<About />} />
-        <Route path="*" element={<Navigate to="/adoption" replace />} />
+        <Route path="*" element={<Navigate to="/auth" replace />} />
       </Routes>
 
-      {/* --- MOBILE EXCLUSIVE BOTTOM NAV (HIDDEN ON DESKTOP SCREEN RESOLUTIONS) --- */}
-      {showNavbar && !isDesktop && (
+      {/* --- MOBILE BOTTOM NAVIGATION TABS --- */}
+      {showNavbar && (
         <nav style={{
           position: 'fixed',
           bottom: 0,
