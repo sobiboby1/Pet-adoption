@@ -113,12 +113,14 @@ setLoading(false); // Ensure loading state is turned off
   return (
     <div className="app-main-container" style={{ paddingTop: showNavbar ? '60px' : '0px', paddingBottom: showNavbar ? '70px' : '0px' }}>
       
+    
       {showNavbar && (
-        <header style={{
+        <header header style={{
           position: 'fixed', top: 0, left: 0, right: 0, height: '60px', backgroundColor: '#ffffff',
           borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between',
           alignItems: 'center', padding: '0 20px', zIndex: 1000
         }}>
+
           <span style={{ fontWeight: '800', fontSize: '1.2rem', color: '#ff7a59' }}>PetAdopt</span>
           <button onClick={triggerRehomeModal} style={{
             backgroundColor: '#ff7a59', color: '#ffffff', border: 'none', padding: '6px 14px',
@@ -154,7 +156,8 @@ setLoading(false); // Ensure loading state is turned off
       </Routes>
 
       {showNavbar && (
-        <nav style={{
+         <nav 
+        style={{
           position: 'fixed', bottom: 0, left: 0, right: 0, height: '60px', backgroundColor: '#ffffff',
           borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-around',
           alignItems: 'center', zIndex: 1000, padding: '5px 0'
@@ -195,3 +198,5 @@ export default function Root() {
     </HashRouter>
   );
 }
+
+
