@@ -52,11 +52,9 @@ function App() {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null);
-      if (session) {
-        fetchPosts();
-      } else {
-        setPosts([]);
-      }
+      // Corrected code
+fetchPosts(); // Always fetch, regardless of whether a session exists
+setLoading(false); // Ensure loading state is turned off
     });
 
     const setupDeepLinks = async () => {
